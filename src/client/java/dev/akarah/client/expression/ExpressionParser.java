@@ -84,15 +84,22 @@ public class ExpressionParser {
         System.out.println(reader.getRemaining());
         try {
             reader.skipWhitespace();
-            if (Character.isJavaIdentifierStart(reader.peek()) || reader.peek() == '%') {
+            if (
+                (Character.isJavaIdentifierStart(reader.peek()) || reader.peek() == '%')
+                && reader.peek() != '$'
+            ) {
                 var sb = new StringBuilder();
                 sb.append(reader.read());
                 try {
-                    while (Character.isJavaIdentifierPart(reader.peek()) || reader.peek() == ' ') {
+                    while (
+                        (Character.isJavaIdentifierPart(reader.peek()) || reader.peek() == ' ')
+                            && reader.peek() != '\0' && reader.peek() != '$') {
                         sb.append(reader.read());
                     }
                 } catch (IndexOutOfBoundsException exception) {
                 }
+                if(sb.toString().trim().startsWith("%") && !sb.toString().trim().contains(" "))
+                    return new Expression.StringExpr(sb.toString().trim());
                 return new Expression.Variable(sb.toString().trim());
             } else if (Character.isDigit(reader.peek())) {
                 var sb = new StringBuilder();
@@ -110,13 +117,32 @@ public class ExpressionParser {
                 reader.read();
                 var expr = parseExpression();
                 if(reader.peek() != ')')
-                    throw new ValueConversionException("expected ')");
+                    throw new ValueConversionException("expected ')'");
                 reader.read();
                 return expr;
+            } else if(reader.peek() == '"') {
+                reader.read();
+
+                var sb = new StringBuilder();
+                while(reader.peek() != '"')
+                    sb.append(reader.read());
+                if(reader.read() != '"')
+                    throw new ValueConversionException("expected '\"'");
+                return new Expression.StringExpr(sb.toString());
+            } else if(reader.peek() == '$') {
+                reader.read();
+                if(reader.read() != '"')
+                    throw new ValueConversionException("expected '\"'");
+                var sb = new StringBuilder();
+                while(reader.peek() != '"')
+                    sb.append(reader.read());
+                if(reader.read() != '"')
+                    throw new ValueConversionException("expected \"");
+                return new Expression.StyledText(sb.toString());
             }
-        } catch (StringIndexOutOfBoundsException exception) {}
+        } catch (StringIndexOutOfBoundsException ignored) {}
         reader.skipWhitespace();
         System.out.println(reader.getRemaining());
-        throw new ValueConversionException("expected a valid value in expression");
+        throw new ValueConversionException("expected a valid start of value in expression, got " + reader.peek());
     }
 }

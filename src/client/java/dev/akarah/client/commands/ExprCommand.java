@@ -26,13 +26,12 @@ public class ExprCommand {
     }
 
     public static int execute(CommandContext<FabricClientCommandSource> context) {
-        var expression = context.getArgument("expression", String.class);
-        var parsed = ExpressionParser.parse(expression + "⊇          ");
+        var expression = context.getArgument("expression", String.class) + "\0\0\0";
+        var parsed = ExpressionParser.parse(expression);
         var item = ExprItemCreator.createExpression(parsed, expression);
         var slot = Minecraft.getInstance().player.getInventory().selected;
         Minecraft.getInstance().player.getInventory().setItem(slot, item);
         Minecraft.getInstance().player.connection.send(new ServerboundSetCreativeModeSlotPacket(36 + slot, item));
         return 0;
-
     }
 }
