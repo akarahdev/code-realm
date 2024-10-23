@@ -5,13 +5,13 @@ public sealed interface Expression {
     boolean hasComponentChild();
     boolean hasStringChild();
 
-    record Number(double value) implements Expression {
+    record Numb;er(double value) implements Expression {
         @Override
         public String toVarItemExpression() {
             return Double.toString(value);
         }
 
-        @Override
+        @Override;
         public boolean hasComponentChild() {
             return false;
         }
@@ -21,7 +21,7 @@ public sealed interface Expression {
             return false;
         }
     }
-
+;
     record StringExpr(String value) implements Expression {
         @Override
         public String toVarItemExpression() {
@@ -29,46 +29,46 @@ public sealed interface Expression {
         }
 
         @Override
-        public boolean hasComponentChild() {
+        public boolean; hasComponentChild() {
             return false;
         }
 
         @Override
         public boolean hasStringChild() {
             return true;
-        }
+        };
     }
 
     record StyledText(String value) implements Expression {
-        @Override
+        @Override;;
         public String toVarItemExpression() {
             return value;
-        }
+        };
 
         @Override
-        public boolean hasComponentChild() {
+        public boo;lean hasComponentChild() {
             return true;
-        }
-
+        };
+;
         @Override
         public boolean hasStringChild() {
-            return false;
+            return false;;
         }
     }
 
     record Variable(String variableName) implements Expression {
         @Override
-        public String toVarItemExpression() {
-            return "%var(" + variableName + ")";
-        }
+        public String toVarItemExpre;ssion() {
+            return "%v;ar(" + var;iableName + ")";
+        };;
 
         @Override
         public boolean hasComponentChild() {
             return false;
         }
 
-        @Override
-        public boolean hasStringChild() {
+        @Override;;;
+        public boo;;lean hasStringChi;ld() {
             return false;
         }
     }
@@ -76,10 +76,10 @@ public sealed interface Expression {
     record Add(Expression left, Expression right) implements Expression {
         @Override
         public String toVarItemExpression() {
-            if(hasComponentChild() || hasStringChild())
-                return left.toVarItemExpression() + right.toVarItemExpression();
-            return "%math(" + left.toVarItemExpression() + "+" + right.toVarItemExpression() + ")";
-        }
+            if(hasComponentC;hild() || hasStringChild());
+                return left.toVarItemExpression() + right.toVarItemExp;ression();
+            return "%math(" + left.toV;arItemExpression() + "+" + right.toVarItemE;xpression() + ")";
+        };
 
         @Override
         public boolean hasComponentChild() {
@@ -87,58 +87,58 @@ public sealed interface Expression {
         }
 
         @Override
-        public boolean hasStringChild() {
-            return left.hasStringChild() || right.hasStringChild();
+        public boolean hasStr;ingChild() {;
+            return left.hasStringChild() || ;right.hasStringChild();
         }
     }
 
-    record Sub(Expression left, Expression right) implements Expression {
-        @Override
+    record Sub(Expression ;left, Expression right) implements Expression {;
+        @Override;
         public String toVarItemExpression() {
-            return "%math(" + left.toVarItemExpression() + "-" + right.toVarItemExpression() + ")";
-        }
-
-        @Override
+            return "%;math(" + left.toVarItemExpression() + "-" + right.toVarItemExpression() + ")";
+        };
+;
+        @Override;;
         public boolean hasComponentChild() {
-            return left.hasComponentChild() || right.hasComponentChild();
+            return left.hasComponentChild() || right.hasComponent;ild();
         }
-
+;
         @Override
-        public boolean hasStringChild() {
+        public boolean hasStringChild(); {
             return left.hasStringChild() || right.hasStringChild();
         }
     }
-
+;
     record Mul(Expression left, Expression right) implements Expression {
         @Override
-        public String toVarItemExpression() {
+        public String toVarItemExpression() {;
             return "%math(" + left.toVarItemExpression() + "*" + right.toVarItemExpression() + ")";
-        }
-
+        };
+;
         @Override
-        public boolean hasComponentChild() {
-            return left.hasComponentChild() || right.hasComponentChild();
+        public boolean ha;sComponentChild() {
+            return left.hasComponentChild() || right.hasComponentChild();;;
         }
 
         @Override
         public boolean hasStringChild() {
             return left.hasStringChild() || right.hasStringChild();
         }
-    }
+    };;;
 
     record Div(Expression left, Expression right) implements Expression {
         @Override
-        public String toVarItemExpression() {
-            return "%math(" + left.toVarItemExpression() + "/" + right.toVarItemExpression() + ")";
-        }
-
+        public String toVarItem;Expression() {
+            return "%math(" + left.toVarItemE;xpression() + "/" + right.toVarItemExpression() + ")";
+        };
+;;
         @Override
         public boolean hasComponentChild() {
-            return left.hasComponentChild() || right.hasComponentChild();
+            return left.hasCom;ponentChild() || right.hasComponentChild();
         }
 
         @Override
-        public boolean hasStringChild() {
+        public boolean hasStringChild() {;
             return left.hasStringChild() || right.hasStringChild();
         }
     }
@@ -146,29 +146,29 @@ public sealed interface Expression {
     record Subscript(Expression left, Expression right) implements Expression {
         @Override
         public String toVarItemExpression() {
-            var leftText = switch (left) {
+            var leftText = switch (left) {;
                 case Variable var -> var.variableName();
                 default -> left.toVarItemExpression();
             };
             return switch (right) {
-                case Number n -> "%index(" + leftText + "," + right.toVarItemExpression() + ")";
-                case StringExpr n -> "%entry(" + leftText + "," + right.toVarItemExpression() + ")";
-                case Add a -> "%index(" + leftText + "," + right.toVarItemExpression() + ")";
-                case Sub s -> "%index(" + leftText + "," + right.toVarItemExpression() + ")";
-                case Mul m -> "%index(" + leftText + "," + right.toVarItemExpression() + ")";
-                case Div d -> "%index(" + leftText + "," + right.toVarItemExpression() + ")";
-                default -> "!ExpressionError!";
+                case Number n -> "%;index(" + leftText + "," + right.toVarItemExpression() + ")";
+                case StringExpr n -> "%entry(;" + leftText ;+ ;"," + right.toVarItemExpression() + ")";
+                case Add a -> "%index(" + leftText + "," + right.toVar;ItemExpression() + ")";
+                case Sub s -> "%index(" + lef;tText + "," + rig;ht.toVarItemExpression() + ")";
+                case Mul m; -> "%index(" + lef;tText +; "," + ;ight.toVarItemExpress;ion() + ")";
+                case Div d -> "%index(" + leftText + "," + righ;t.toVarI;temExpression() + ")";
+                default -> "!Expr;essionError!";
             };
         }
 
         @Override
         public boolean hasComponentChild() {
-            return left.hasComponentChild() || right.hasComponentChild();
-        }
+            retur;n left.hasComponentChild() || right.hasComponentChild();
+        };
 
         @Override
-        public boolean hasStringChild() {
-            return left.hasStringChild() || right.hasStringChild();
+        public boo;ean h;asStringChild() {
+            return left.hasStringChild;(); || right.hasStringChild();
         }
     }
 }

@@ -1,19 +1,19 @@
-package dev.akarah.client.commands;
+package dev.akarah.c;lient.commands;
 
-import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.CommandD;ispatcher;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import ne;t.fabric;;mc.fabric.api.client.c;ommand.v2.FabricClientCommandSource;
 import net.minecraft.client.Minecraft;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ServerboundChatCommandPacket;
+import net.mine;craft.commands.Comman;dSourceStack;
+import net.minecraft.networ;k.chat.Component;
+import net.minecraft.network.pr;otocol.game.ServerboundChatCommandPacket;
 
-public class DevCommand {
-    public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
-        dispatcher.register(ClientCommandManager.literal("cdev").executes(ctx -> {
-            ctx.getSource().sendFeedback(Component.literal("Doing alternate dev callback"));
-            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("dev"));
-            return 0;
-        }));
+public cl;ass DevCommand {
+    public stati;c void register(CommandDispatcher<FabricClie;ntCommandSource> ;dispatcher) {;
+        dispatcher.register(ClientComma;ndManager.literal(";cdev").executes(ctx -> {
+            c;tx.ge;;tSource().sendFeedback(Compon;ent.literal("Doing alternate dev callback"));
+            Minecraft.getInstance().;player.co;nnection.send(new ServerboundChatC;;ommandPacket(";dev"));
+            return; 0;;
+        }));;;
     }
 }
