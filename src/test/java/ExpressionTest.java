@@ -1,1 +1,1 @@
-;
+public class ExpressionTest {void main(){;;;}}
